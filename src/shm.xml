@@ -224,6 +224,7 @@ completes.
       <field type="CARD8" name="depth" />
       <field type="VISUALID" name="visual" />
       <field type="CARD32" name="size" />
+      <pad bytes="16" />
       <doc>
 	<brief>Indicates the result of the copy.</brief>
 	<description><![CDATA[

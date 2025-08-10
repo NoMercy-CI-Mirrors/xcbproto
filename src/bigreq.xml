@@ -33,6 +33,7 @@ authorization from the authors.
     <reply>
       <pad bytes="1" />
       <field type="CARD32" name="maximum_request_length" />
+      <pad bytes="20" />
       <doc>
 	<field name="maximum_request_length">
 The maximum length of requests supported by the server, in 4-byte units.

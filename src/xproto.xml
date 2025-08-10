@@ -1946,7 +1946,7 @@ The specified `direction` is invalid.
       <field type="CARD16" name="width" />
       <field type="CARD16" name="height" />
       <field type="CARD16" name="border_width" />
-      <pad bytes="2" />
+      <pad bytes="10" />
       <doc>
       <field name="root"><![CDATA[
 Root window of the screen containing `drawable`.
@@ -2079,6 +2079,7 @@ The `window` to query.
     <reply>
       <pad bytes="1" />
       <field type="ATOM" name="atom" altenum="Atom" />
+      <pad bytes="20" />
     </reply>
     <doc>
       <brief>Get atom identifier by name</brief>
@@ -2139,6 +2140,7 @@ A value other than 0 or 1 was specified for `only_if_exists`.
       <list type="char" name="name">
         <fieldref>name_len</fieldref>
       </list>
+      <pad align="4" />
     </reply>
   </request>
 
@@ -2279,6 +2281,7 @@ The X server could not store the property (no memory?).
           </op>
         </op>
       </list>
+      <pad align="4" />
       <doc>
       <field name="format"><![CDATA[
 Specifies whether the data should be viewed as a list of 8-bit, 16-bit, or
@@ -2435,6 +2438,7 @@ time.
     <reply>
       <pad bytes="1" />
       <field type="WINDOW" name="owner" altenum="Window" />
+      <pad bytes="20" />
       <doc>
         <field name="owner"><![CDATA[
 The current selection owner window.
@@ -2593,6 +2597,7 @@ Keyboard event processing continues normally.
     <field type="TIMESTAMP" name="time" altenum="Time" />
     <reply>
       <field type="BYTE" name="status" enum="GrabStatus" />
+      <pad bytes="24" />
     </reply>
     <doc>
       <brief>Grab the pointer</brief>
@@ -2860,6 +2865,7 @@ The specified `window` does not exist.
     <pad bytes="2" />
     <reply>
       <field type="BYTE" name="status" enum="GrabStatus" />
+      <pad bytes="24" />
     </reply>
     <doc>
       <brief>Grab the keyboard</brief>
@@ -3179,7 +3185,7 @@ You specified an invalid `mode`.
       <field type="INT16" name="win_x" />
       <field type="INT16" name="win_y" />
       <field type="CARD16" name="mask" mask="KeyButMask" />
-      <pad bytes="2" />
+      <pad bytes="6" />
       <doc>
         <field name="same_screen"><![CDATA[
 If `same_screen` is False, then the pointer is not on the same screen as the
@@ -3264,6 +3270,7 @@ The specified `window` does not exist.
       <field type="WINDOW" name="child" altenum="Window" />
       <field type="INT16" name="dst_x" />
       <field type="INT16" name="dst_y" />
+      <pad bytes="16" />
     </reply>
   </request>
 
@@ -3388,6 +3395,7 @@ TODO: Reasons?
     <reply>
       <field type="CARD8" name="revert_to" enum="InputFocus" />
       <field type="WINDOW" name="focus" altenum="InputFocus" />
+      <pad bytes="20" />
     </reply>
   </request>
 
@@ -3539,6 +3547,7 @@ The fontable (Font or Graphics Context) to query.
       <field type="INT32" name="overall_width" />
       <field type="INT32" name="overall_left" />
       <field type="INT32" name="overall_right" />
+      <pad bytes="4" />
     </reply>
     <doc>
       <brief>get text extents</brief>
@@ -3604,6 +3613,7 @@ The specified `font` does not exist.
       <list type="STR" name="names">
         <fieldref>names_len</fieldref>
       </list>
+      <pad align="4" />
       <doc>
         <field name="names_len"><![CDATA[
 The number of font names.
@@ -3740,6 +3750,7 @@ The maximum number of fonts to be returned.
       <list type="STR" name="path">
         <fieldref>path_len</fieldref>
       </list>
+      <pad align="4" />
     </reply>
   </request>
 
@@ -4705,6 +4716,7 @@ TODO: reasons?
           <value>4</value>
         </op>
       </list>
+      <pad align="4" />
     </reply>
   </request>
 
@@ -4901,6 +4913,7 @@ TODO: reasons?
       <field type="CARD16" name="blue" />
       <pad bytes="2" />
       <field type="CARD32" name="pixel" />
+      <pad bytes="12" />
     </reply>
     <doc>
       <brief>Allocate a color</brief>
@@ -4946,6 +4959,7 @@ The specified colormap `cmap` does not exist.
       <field type="CARD16" name="visual_red" />
       <field type="CARD16" name="visual_green" />
       <field type="CARD16" name="visual_blue" />
+      <pad bytes="8" />
     </reply>
   </request>
 
@@ -5065,6 +5079,7 @@ The specified colormap `cmap` does not exist.
       <field type="CARD16" name="visual_red" />
       <field type="CARD16" name="visual_green" />
       <field type="CARD16" name="visual_blue" />
+      <pad bytes="12" />
     </reply>
   </request>
 
@@ -5208,6 +5223,7 @@ The specified cursor does not exist.
       <pad bytes="1" />
       <field type="CARD16" name="width" />
       <field type="CARD16" name="height" />
+      <pad bytes="20" />
     </reply>
   </request>
 
@@ -5224,6 +5240,7 @@ The specified cursor does not exist.
       <field type="CARD8" name="major_opcode" />
       <field type="CARD8" name="first_event" />
       <field type="CARD8" name="first_error" />
+      <pad bytes="20" />
       <doc>
         <field name="present"><![CDATA[
 Whether the extension is present on this X11 server.
@@ -5271,6 +5288,7 @@ sensitive!
       <list type="STR" name="names">
         <fieldref>names_len</fieldref>
       </list>
+      <pad align="4" />
     </reply>
   </request>
 
@@ -5557,6 +5575,7 @@ The specified `resource` does not exist.
     </list>
     <reply>
       <field type="BYTE" name="status" enum="MappingStatus" />
+      <pad bytes="24" />
     </reply>
   </request>
 
@@ -5591,6 +5610,7 @@ The specified `resource` does not exist.
     </list>
     <reply>
       <field type="BYTE" name="status" enum="MappingStatus" />
+      <pad bytes="24" />
     </reply>
   </request>
 
