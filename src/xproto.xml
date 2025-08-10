@@ -1110,14 +1110,14 @@ The extension-specific event type
     <field type="CARD32" name="bad_value" />
     <field type="CARD16" name="minor_opcode" />
     <field type="CARD8" name="major_opcode" />
-    <pad bytes="1" />
+    <pad bytes="21" />
   </error>
 
   <error name="Value" number="2">
     <field type="CARD32" name="bad_value" />
     <field type="CARD16" name="minor_opcode" />
     <field type="CARD8" name="major_opcode" />
-    <pad bytes="1" />
+    <pad bytes="21" />
   </error>
 
   <errorcopy name="Window" number="3" ref="Value" />
