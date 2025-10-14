@@ -294,7 +294,6 @@ class ListType(Type):
         self.is_list = True
         self.member = member
         self.parents = list(parent)
-        lenfield_name = False
 
         if elt.tag == 'list':
             elts = list(elt)
