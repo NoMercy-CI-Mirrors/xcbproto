@@ -346,13 +346,8 @@ The patch that fixed this server bug in X.org is here:
 			<pad bytes="1" />
 			<field type="CARD32" name="num_FB_configs" />
 			<field type="CARD32" name="num_properties" />
-                        <pad bytes="16" />
-                        <!--
-			<valueparam value-mask-type="CARD32"
-				value-mask-name="value_mask"
-                                value-list-name="value_list" />
-                            -->
-                        <list type="CARD32" name="property_list">
+			<pad bytes="16" />
+			<list type="CARD32" name="property_list">
 				<fieldref>length</fieldref>
 			</list>
 		</reply>

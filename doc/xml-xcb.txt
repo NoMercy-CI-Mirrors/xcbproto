@@ -256,16 +256,6 @@ enum; the value is restricted to one of the constants named in the enum.
   the expression giving the value of the field.  See the section "Expressions"
   for details on the expression representation.
 
-<valueparam value-mask-type="identifier" value-mask-name="identifier"
-            value-list-name="identifier" />
-
-  This element represents a BITMASK/LISTofVALUE parameter pair: a bitmask
-  defining the set of values included, and a list containing these values.
-  value-mask-type gives the type of the bitmask; this must be CARD16 or
-  CARD32.  value-mask-name gives the field name of the bitmask, and
-  value-list-name gives the field name of the list of values. Please use
-  <switch> instead for new protocol definitions.
-
 <switch name="identifier"> switch expression
     <bitcase [name="identifier"]> bitcase expression(s), fields </bitcase>
     <case [name="identifier"]> case expression(s), fields </case>
@@ -298,8 +288,7 @@ enum; the value is restricted to one of the constants named in the enum.
 
   The same value may appear in multiple <case> or <bitcase> elements.
 
-  New protocol definitions should prefer to use this instead of <valueparam>
-  and instead of <union>.
+  New protocol definitions should prefer to use this instead of <union>.
 
 
 Expressions
