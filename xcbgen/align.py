@@ -2,12 +2,7 @@
 This module contains helper classes for alignment arithmetic and checks
 '''
 
-from sys import version_info
-
-if version_info[:2] >= (3, 5):
-    from math import gcd
-else:
-    from fractions import gcd
+from math import gcd
 
 class Alignment(object):
 
