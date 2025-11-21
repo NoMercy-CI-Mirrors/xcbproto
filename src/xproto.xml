@@ -2287,17 +2287,23 @@ The X server could not store the property (no memory?).
 Specifies whether the data should be viewed as a list of 8-bit, 16-bit, or
 32-bit quantities. Possible values are 8, 16, and 32. This information allows
 the X server to correctly perform byte-swap operations as necessary.
+If the specified property does not exist for the specified window,
+the value is 0.
       ]]></field>
       <field name="type"><![CDATA[
-The actual type of the property (an atom).
+The actual type of the property (an atom).  If the specified property does not
+exist for the specified window, the type is `XCB_NONE`.
       ]]></field>
       <field name="bytes_after"><![CDATA[
 The number of bytes remaining to be read in the property if a partial read was
-performed.
+performed. If the specified property does not exist for the specified window,
+the value is 0.
       ]]></field>
       <field name="value_len"><![CDATA[
-The length of value. You should use the corresponding accessor instead of this
-field.
+The length of value, in the units specified by the format.
+You should use the corresponding accessor instead of this field.
+If the specified property does not exist for the specified window,
+the length is 0.
       ]]></field>
       </doc>
     </reply>
@@ -2330,7 +2336,8 @@ void my_example(xcb_connection_t *c, xcb_window_t window) {
 
     // TODO: a reasonable long_length for WM_NAME?
     cookie = xcb_get_property(c, 0, window, property, type, 0, 0);
-    if ((reply = xcb_get_property_reply(c, cookie, NULL))) {
+    if ((reply = xcb_get_property_reply(c, cookie, NULL))
+        && reply->type == XCB_ATOM_STRING) {
         int len = xcb_get_property_value_length(reply);
         if (len == 0) {
             printf("TODO\\n");
