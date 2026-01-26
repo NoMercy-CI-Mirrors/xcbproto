@@ -1,8 +1,8 @@
 '''
 This module contains the classes which represent XCB data types.
 '''
-from xcbgen.expr import Field, Expression
-from xcbgen.align import Alignment, AlignmentLog
+from .expr import Field, Expression
+from .align import Alignment, AlignmentLog
 from xml.etree.ElementTree import SubElement
 
 import __main__

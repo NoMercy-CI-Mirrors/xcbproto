@@ -3,11 +3,21 @@ This module contains the namespace class and the singleton module class.
 '''
 from os.path import dirname, basename
 from xml.etree.ElementTree import parse
-from xcbgen import matcher
-from xcbgen.error import *
-from xcbgen.xtypes import *
-
-import __main__
+from .error import ResolveException
+from .xtypes import (tcard8,
+    tcard16,
+    tcard32,
+    tcard64,
+    tint8,
+    tint16,
+    tint32,
+    tint64,
+    tchar,
+    tfloat,
+    tdouble,
+    tbyte,
+    tbool,
+    tvoid)
 
 class Namespace:
     '''
@@ -108,7 +118,8 @@ class Module:
 
     # This goes out and parses the rest of the XML
     def register(self):
-        matcher.execute(self, self.namespace)
+        from .matcher import execute
+        execute(self, self.namespace)
 
     # Recursively resolve all types
     def resolve(self):

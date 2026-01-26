@@ -7,9 +7,7 @@ we do not create a new type object, we just record the existing one under a new 
 '''
 
 from os.path import join
-from xml.etree.ElementTree import parse
-
-from xcbgen.xtypes import *
+from .xtypes import (Enum, Struct, Union, Request, EventStruct, Event, Error)
 
 def import_(node, module, namespace):
     '''
@@ -17,11 +15,11 @@ def import_(node, module, namespace):
     execute recursively, then record the import (for header files, etc.)
     '''
     # To avoid circular import error
-    from xcbgen import state
+    from .state import Namespace
     module.import_level = module.import_level + 1
     new_file = join(namespace.dir, '%s.xml' % node.text)
     new_root = parse(new_file).getroot()
-    new_namespace = state.Namespace(new_file)
+    new_namespace = Namespace(new_file)
     execute(module, new_namespace)
     module.import_level = module.import_level - 1
     if not module.has_import(node.text):
