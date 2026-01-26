@@ -5,8 +5,6 @@ from .expr import Field, Expression
 from .align import Alignment, AlignmentLog
 from xml.etree.ElementTree import SubElement
 
-import __main__
-
 verbose_align_log = False
 true_values = ['true', '1', 'yes']
 
@@ -57,13 +55,11 @@ class Type:
         '''
         raise Exception('abstract resolve method not overridden!')
 
-    def out(self, name):
+    def out(self, name, output):
         '''
         Abstract method for outputting code.
-        These are declared in the language-specific modules, and
-        there must be a dictionary containing them declared when this module is imported!
         '''
-        raise Exception('abstract out method not overridden!')
+        pass
 
     def fixed_size(self):
         '''
@@ -204,7 +200,8 @@ class SimpleType(PrimitiveType):
     def resolve(self, module):
         self.resolved = True
 
-    out = __main__.output['simple']
+    def out(self, name, output):
+        output['simple'](self, name)
 
 
 # Cardinal datatype globals.  See module __init__ method.
@@ -234,7 +231,6 @@ class FileDescriptor(SimpleType):
     def fixed_size(self):
         return True
 
-    out = __main__.output['simple']
 
 class Enum(SimpleType):
     '''
@@ -272,7 +268,8 @@ class Enum(SimpleType):
     def fixed_size(self):
         return True
 
-    out = __main__.output['enum']
+    def out(self, name, output):
+        output['enum'](self, name)
 
 
 class ListType(Type):
@@ -986,7 +983,8 @@ class Struct(ComplexType):
     '''
     Derived class representing a struct data type.
     '''
-    out = __main__.output['struct']
+    def out(self, name, output):
+        output['struct'](self, name)
 
 
 class Union(ComplexType):
@@ -997,8 +995,8 @@ class Union(ComplexType):
         super().__init__(name, elt)
         self.is_union = True
 
-    out = __main__.output['union']
-
+    def out(self, name, output):
+        output['union'](self, name)
 
     def calc_size(self):
         self.size = 0
@@ -1195,7 +1193,8 @@ class Request(ComplexType):
         if self.reply:
             self.reply.resolve(module)
 
-    out = __main__.output['request']
+    def out(self, name, output):
+        output['request'](self, name)
 
 
 class EventStructAllowedRule:
@@ -1246,7 +1245,8 @@ class EventStruct(Union):
                 if allowedRule.ge_events:
                     self.contains_ge_events = True
 
-    out = __main__.output['eventstruct']
+    def out(self, name, output):
+        output['eventstruct'](self, name)
 
     def resolve(self, module):
         if self.resolved:
@@ -1335,7 +1335,8 @@ class Event(ComplexType):
 
         ComplexType.resolve(self, module)
 
-    out = __main__.output['event']
+    def out(self, name, output):
+        output['event'](self, name)
 
 
 class Error(ComplexType):
@@ -1375,7 +1376,8 @@ class Error(ComplexType):
         self.fields.append(Field(tcard16, tcard16.name, 'sequence', False, True, True))
         ComplexType.resolve(self, module)
 
-    out = __main__.output['error']
+    def out(self, name, output):
+        output['error'](self, name)
 
 
 class Doc:

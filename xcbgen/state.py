@@ -80,8 +80,6 @@ class Module:
     Public fields:
     namespace contains the namespace info for the spec.
     '''
-    open = __main__.output['open']
-    close = __main__.output['close']
 
     def __init__(self, filename, output):
         self.namespace = Namespace(filename)
@@ -116,6 +114,12 @@ class Module:
         self.add_type('double', '', ('double',), tdouble)
         self.add_type('void', '', ('void',), tvoid)
 
+    def open(self):
+        self.output['open'](self)
+
+    def close(self):
+        self.output['close'](self)
+
     # This goes out and parses the rest of the XML
     def register(self):
         from .matcher import execute
@@ -133,7 +137,7 @@ class Module:
         self.open()
 
         for (name, item) in self.all:
-            item.out(name)
+            item.out(name, self.output)
 
         self.close()
 
