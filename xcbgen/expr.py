@@ -1,7 +1,7 @@
 '''
 This module contains helper classes for structure fields and length expressions.
 '''
-class Field(object):
+class Field:
     '''
     Represents a field of a structure.
 
@@ -36,7 +36,7 @@ class Field(object):
 
         return field_string
 
-class Expression(object):
+class Expression:
     '''
     Represents a mathematical expression for a list length or exprfield.
 

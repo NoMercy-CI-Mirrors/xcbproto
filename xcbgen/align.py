@@ -4,7 +4,7 @@ This module contains helper classes for alignment arithmetic and checks
 
 from math import gcd
 
-class Alignment(object):
+class Alignment:
 
     def __init__(self, align=4, offset=0):
         self.align = align
@@ -89,7 +89,7 @@ class Alignment(object):
         return Alignment(new_align, new_offset)
 
 
-class AlignmentLog(object):
+class AlignmentLog:
 
     def __init__(self):
         self.ok_list = []

@@ -9,7 +9,7 @@ from xcbgen.xtypes import *
 
 import __main__
 
-class Namespace(object):
+class Namespace:
     '''
     Contains the naming information for an extension.
 
@@ -60,7 +60,7 @@ class Namespace(object):
         return None
 
 
-class Module(object):
+class Module:
     '''
     This is the grand, encompassing class that represents an entire XCB specification.
     Only gets instantiated once, in the main() routine.

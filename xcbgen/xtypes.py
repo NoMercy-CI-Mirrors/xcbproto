@@ -10,7 +10,7 @@ import __main__
 verbose_align_log = False
 true_values = ['true', '1', 'yes']
 
-class Type(object):
+class Type:
     '''
     Abstract base class for all XCB data types.
     Contains default fields, and some abstract methods.
@@ -165,7 +165,7 @@ class Type(object):
 class PrimitiveType(Type):
 
     def __init__(self, name, size):
-        Type.__init__(self, name)
+        super().__init__(name)
         self.size = size
         self.nmemb = 1
 
@@ -197,7 +197,7 @@ class SimpleType(PrimitiveType):
     xml_type is the original string describing the type in the XML
     '''
     def __init__(self, name, size, xml_type=None):
-        PrimitiveType.__init__(self, name, size)
+        super().__init__(name, size)
         self.is_simple = True
         self.xml_type = xml_type
 
@@ -228,7 +228,7 @@ class FileDescriptor(SimpleType):
     Derived class which represents a file descriptor.
     '''
     def __init__(self):
-        SimpleType.__init__(self, ('int',), 4, 'fd')
+        super().__init__(('int',), 4, 'fd')
         self.is_fd = True
 
     def fixed_size(self):
@@ -245,7 +245,7 @@ class Enum(SimpleType):
     bits contains a list of (name, bitnum) tuples.  items only appear if specified as a bit. bitnum is a number.
     '''
     def __init__(self, name, elt):
-        SimpleType.__init__(self, name, 4, 'enum')
+        super().__init__(name, 4, 'enum')
         self.values = []
         self.bits = []
         self.doc = None
@@ -285,7 +285,7 @@ class ListType(Type):
     expr is an Expression object containing the length information, for variable-sized lists.
     '''
     def __init__(self, elt, member, *parent):
-        Type.__init__(self, member.name)
+        super().__init__(member.name)
         self.is_list = True
         self.member = member
         self.parents = list(parent)
@@ -427,7 +427,7 @@ class ExprType(PrimitiveType):
     expr is an Expression object containing the value of the field.
     '''
     def __init__(self, elt, member, *parents):
-        PrimitiveType.__init__(self, member.name, member.size)
+        super().__init__(member.name, member.size)
         self.is_expr = True
         self.member = member
         self.parents = parents
@@ -446,7 +446,7 @@ class PadType(Type):
     Derived class which represents a padding field.
     '''
     def __init__(self, elt):
-        Type.__init__(self, tcard8.name)
+        super().__init__(tcard8.name)
         self.is_pad = True
         self.size = 1
         self.nmemb = 1
@@ -508,7 +508,7 @@ class ComplexType(Type):
 
     '''
     def __init__(self, name, elt):
-        Type.__init__(self, name)
+        super().__init__(name)
         self.is_container = True
         self.elt = elt
         self.fields = []
@@ -766,7 +766,7 @@ class SwitchType(ComplexType):
     '''
 
     def __init__(self, name, elt, *parents):
-        ComplexType.__init__(self, name, elt)
+        super().__init__(name, elt)
         self.parents = parents
         # FIXME: switch cannot store lenfields, so it should just delegate the parents
         self.lenfield_parent = list(parents) + [self]
@@ -994,7 +994,7 @@ class Union(ComplexType):
     Derived class representing a union data type.
     '''
     def __init__(self, name, elt):
-        ComplexType.__init__(self, name, elt)
+        super().__init__(name, elt)
         self.is_union = True
 
     out = __main__.output['union']
@@ -1071,7 +1071,7 @@ class CaseOrBitcaseType(ComplexType):
             if sub_elt.tag == 'enumref':
                 self.expr.append(Expression(sub_elt, self))
                 elt.remove(sub_elt)
-        ComplexType.__init__(self, name, elt)
+        super().__init__(name, elt)
         self.has_name = True
         self.index = 1
         self.lenfield_parent = list(parent) + [self]
@@ -1115,7 +1115,7 @@ class BitcaseType(CaseOrBitcaseType):
     Derived class representing a bitcase.
     '''
     def __init__(self, index, name, elt, *parent):
-        CaseOrBitcaseType.__init__(self, index, name, elt, *parent)
+        super().__init__(index, name, elt, *parent)
         self.is_bitcase = True
 
 class CaseType(CaseOrBitcaseType):
@@ -1123,7 +1123,7 @@ class CaseType(CaseOrBitcaseType):
     Derived class representing a case.
     '''
     def __init__(self, index, name, elt, *parent):
-        CaseOrBitcaseType.__init__(self, index, name, elt, *parent)
+        super().__init__(index, name, elt, *parent)
         self.is_case = True
 
 
@@ -1132,7 +1132,7 @@ class Reply(ComplexType):
     Derived class representing a reply.  Only found as a field of Request.
     '''
     def __init__(self, name, elt):
-        ComplexType.__init__(self, name, elt)
+        super().__init__(name, elt)
         self.is_reply = True
         self.doc = None
         if self.required_start_align is None:
@@ -1164,7 +1164,7 @@ class Request(ComplexType):
     opcode contains the request number.
     '''
     def __init__(self, name, elt):
-        ComplexType.__init__(self, name, elt)
+        super().__init__(name, elt)
         self.reply = None
         self.doc = None
         self.opcode = elt.get('opcode')
@@ -1236,7 +1236,7 @@ class EventStruct(Union):
     '''
 
     def __init__(self, name, elt):
-        Union.__init__(self, name, elt)
+        super().__init__(name, elt)
         self.is_eventstruct = True
         self.events = []
         self.allowedRules = []
@@ -1282,7 +1282,7 @@ class Event(ComplexType):
     opcodes is a dictionary of name -> opcode number, for eventcopies.
     '''
     def __init__(self, name, elt):
-        ComplexType.__init__(self, name, elt)
+        super().__init__(name, elt)
 
         if self.required_start_align is None:
             self.required_start_align = Alignment(4,0)
@@ -1348,7 +1348,7 @@ class Error(ComplexType):
     opcodes is a dictionary of name -> opcode number, for errorcopies.
     '''
     def __init__(self, name, elt):
-        ComplexType.__init__(self, name, elt)
+        super().__init__(name, elt)
         self.opcodes = {}
         if self.required_start_align is None:
             self.required_start_align = Alignment(4,0)
@@ -1380,7 +1380,7 @@ class Error(ComplexType):
     out = __main__.output['error']
 
 
-class Doc(object):
+class Doc:
     '''
     Class representing a <doc> tag.
     '''
