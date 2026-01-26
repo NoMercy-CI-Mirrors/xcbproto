@@ -302,7 +302,8 @@ class ListType(Type):
 
         self.required_start_align = self.member.required_start_align
 
-    def make_member_of(self, module, complex_type, field_type, field_name, visible, wire, auto, enum=None):
+
+    def make_member_of(self, module, complex_type, field_type, field_name, visible, wire, auto, enum=None, is_fd=False):
         if not self.fixed_size():
             # We need a length field.
             # Ask our Expression object for it's name, type, and whether it's on the wire.
@@ -824,7 +825,7 @@ class SwitchType(ComplexType):
         self.calc_or_check_required_start_align()
         self.resolved = True
 
-    def make_member_of(self, module, complex_type, field_type, field_name, visible, wire, auto, enum=None):
+    def make_member_of(self, module, complex_type, field_type, field_name, visible, wire, auto, enum=None, is_fd=False):
         if not self.fixed_size():
             # We need a length field.
             # Ask our Expression object for it's name, type, and whether it's on the wire.
@@ -1076,7 +1077,7 @@ class CaseOrBitcaseType(ComplexType):
         self.parents = list(parent)
         self.is_case_or_bitcase = True
 
-    def make_member_of(self, module, switch_type, field_type, field_name, visible, wire, auto, enum=None):
+    def make_member_of(self, module, switch_type, field_type, field_name, visible, wire, auto, enum=None, is_fd=False):
         '''
         register BitcaseType with the corresponding SwitchType
 
