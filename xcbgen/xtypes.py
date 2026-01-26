@@ -173,7 +173,7 @@ class PrimitiveType(Type):
         self.required_start_align = Alignment.for_primitive_type(self.size)
 
     def unchecked_get_alignment_after(self, start_align, callstack, log):
-        my_callstack = callstack + [self];
+        my_callstack = callstack + [self]
         after_align = start_align.align_after_fixed_size(self.size)
 
         if log is not None:
@@ -595,7 +595,7 @@ class ComplexType(Type):
             if type.max_align_pad > self.max_align_pad:
                 self.max_align_pad = type.max_align_pad
 
-        self.check_implicit_fixed_size_part_aligns();
+        self.check_implicit_fixed_size_part_aligns()
 
         self.calc_size() # Figure out how big we are
         self.calc_or_check_required_start_align()
@@ -1212,7 +1212,6 @@ class EventStructAllowedRule:
         extension_namespace = module.get_namespace( self.extension )
         if extension_namespace is None:
             raise Exception( "EventStructAllowedRule.resolve: cannot find extension \"" + self.extension + "\"" )
-            return
 
         # find and add the selected events
         for opcode in range(self.min_opcode, self.max_opcode):
@@ -1223,7 +1222,6 @@ class EventStructAllowedRule:
                     raise Exception("EventStructAllowedRule.resolve: cannot find xge-event with opcode " + str(opcode) + " in extension " + self.extension )
                 else:
                     raise Exception("EventStructAllowedRule.resolve: cannot find oldstyle-event with opcode " + str(opcode) + " in extension " + self.extension )
-                return
 
             ( name, event ) = name_and_event
             # add event to EventStruct
