@@ -4,11 +4,12 @@ This module contains the classes which represent XCB data types.
 from .expr import Field, Expression
 from .align import Alignment, AlignmentLog
 from xml.etree.ElementTree import SubElement
+from abc import ABC, abstractmethod
 
 verbose_align_log = False
 true_values = ['true', '1', 'yes']
 
-class Type:
+class Type(ABC):
     '''
     Abstract base class for all XCB data types.
     Contains default fields, and some abstract methods.
@@ -48,12 +49,12 @@ class Type:
         # the biggest align value of an align-pad contained in this type
         self.max_align_pad = 1
 
+    @abstractmethod
     def resolve(self, module):
         '''
         Abstract method for resolving a type.
         This should make sure any referenced types are already declared.
         '''
-        raise Exception('abstract resolve method not overridden!')
 
     def out(self, name, output):
         '''
@@ -61,11 +62,11 @@ class Type:
         '''
         pass
 
+    @abstractmethod
     def fixed_size(self):
         '''
         Abstract method for determining if the data type is fixed-size.
         '''
-        raise Exception('abstract fixed_size method not overridden!')
 
     def make_member_of(self, module, complex_type, field_type, field_name, visible, wire, auto, enum=None, is_fd=False):
         '''
@@ -137,14 +138,13 @@ class Type:
                     % (str(self.required_start_align)))
             return None
 
+    @abstractmethod
     def unchecked_get_alignment_after(self, start_align, callstack, log):
         '''
         Abstract method for geting the alignment after this type
         when the alignment at the start is given, and when this type
         has variable size.
         '''
-        raise Exception('abstract unchecked_get_alignment_after method not overridden!')
-
 
     @staticmethod
     def type_name_to_str(type_name):
