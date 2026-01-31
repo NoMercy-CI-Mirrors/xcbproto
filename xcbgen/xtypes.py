@@ -49,12 +49,12 @@ class Type(ABC):
         # the biggest align value of an align-pad contained in this type
         self.max_align_pad = 1
 
-    @abstractmethod
     def resolve(self, module):
         '''
-        Abstract method for resolving a type.
+        Method for resolving a type.
         This should make sure any referenced types are already declared.
         '''
+        self.resolved = True
 
     def out(self, name, output):
         '''
@@ -197,9 +197,6 @@ class SimpleType(PrimitiveType):
         self.is_simple = True
         self.xml_type = xml_type
 
-    def resolve(self, module):
-        self.resolved = True
-
     def out(self, name, output):
         output['simple'](self, name)
 
@@ -261,9 +258,6 @@ class Enum(SimpleType):
             elif value.tag == 'bit':
                 self.values.append((item.get('name'), '%u' % (1 << int(value.text, 0))))
                 self.bits.append((item.get('name'), value.text))
-
-    def resolve(self, module):
-        self.resolved = True
 
     def fixed_size(self):
         return True
@@ -456,9 +450,6 @@ class PadType(Type):
 
         # pads don't require any alignment at their start
         self.required_start_align = Alignment(1,0)
-
-    def resolve(self, module):
-        self.resolved = True
 
     def fixed_size(self):
         return self.align <= 1
@@ -1103,7 +1094,7 @@ class CaseOrBitcaseType(ComplexType):
             e.resolve(module, self.parents+[self])
 
         # Resolve the bitcase expression
-        ComplexType.resolve(self, module)
+        super().resolve(module)
 
         #calculate alignment
         self.calc_or_check_required_start_align()
@@ -1151,7 +1142,8 @@ class Reply(ComplexType):
         self.fields.append(_placeholder_byte)
         self.fields.append(Field(tcard16, tcard16.name, 'sequence', False, True, True))
         self.fields.append(Field(tcard32, tcard32.name, 'length', False, True, True))
-        ComplexType.resolve(self, module)
+        super().resolve(module)
+        self.resolved = True
 
 
 class Request(ComplexType):
@@ -1184,15 +1176,16 @@ class Request(ComplexType):
             self.fields.append(Field(tcard8, tcard8.name, 'major_opcode', False, True, True))
             self.fields.append(Field(tcard8, tcard8.name, 'minor_opcode', False, True, True))
             self.fields.append(Field(tcard16, tcard16.name, 'length', False, True, True))
-            ComplexType.resolve(self, module)
+            super().resolve(module)
         else:
             self.fields.append(Field(tcard8, tcard8.name, 'major_opcode', False, True, True))
             self.fields.append(_placeholder_byte)
             self.fields.append(Field(tcard16, tcard16.name, 'length', False, True, True))
-            ComplexType.resolve(self, module)
+            super().resolve(module)
 
         if self.reply:
             self.reply.resolve(module)
+        self.resolved = True
 
     def out(self, name, output):
         output['request'](self, name)
@@ -1254,7 +1247,7 @@ class EventStruct(Union):
             return
         for allowedRule in self.allowedRules:
             allowedRule.resolve(self, module)
-        Union.resolve(self,module)
+        super().resolve(module)
         self.resolved = True
 
     # add event. called by resolve
@@ -1334,7 +1327,8 @@ class Event(ComplexType):
         else:
             add_event_header()
 
-        ComplexType.resolve(self, module)
+        super().resolve(module)
+        self.resolved = True
 
     def out(self, name, output):
         output['event'](self, name)
@@ -1375,7 +1369,8 @@ class Error(ComplexType):
         self.fields.append(Field(tcard8, tcard8.name, 'response_type', False, True, True))
         self.fields.append(Field(tcard8, tcard8.name, 'error_code', False, True, True))
         self.fields.append(Field(tcard16, tcard16.name, 'sequence', False, True, True))
-        ComplexType.resolve(self, module)
+        super().resolve(module)
+        self.resolved = True
 
     def out(self, name, output):
         output['error'](self, name)
