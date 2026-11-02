@@ -1467,12 +1467,14 @@ authorization from the authors.
 				<list name="explicit" type="SetExplicit">
 					<fieldref>totalKeyExplicit</fieldref>
 				</list>
+				<pad align="4" />
 			</bitcase>
 			<bitcase>
 				<enumref ref="MapPart">ModifierMap</enumref>
 				<list name="modmap" type="KeyModMap">
 					<fieldref>totalModMapKeys</fieldref>
 				</list>
+				<pad align="4" />
 			</bitcase>
 			<bitcase>
 				<enumref ref="MapPart">VirtualModMap</enumref>
