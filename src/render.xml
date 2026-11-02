@@ -594,6 +594,7 @@ for licensing information.
       <list type="CARD16" name="aliases">
         <fieldref>num_aliases</fieldref>
       </list>
+      <pad align="4" />
       <list type="STR" name="filters">
         <fieldref>num_filters</fieldref>
       </list>
